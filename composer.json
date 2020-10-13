@@ -1,0 +1,21 @@
+{
+    "name": "davetorres/snowball",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Dave Torres",
+            "email": "dave@unitiweb.com"
+        }
+    ],
+    "require": {
+        "symfony/yaml": "^5.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Snowball\\": "src/"
+        }
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^5.1"
+    }
+}

@@ -1,0 +1,5 @@
+stack:
+  commands:
+    run:
+      description: Run the snowball
+      commands: php src/index.php

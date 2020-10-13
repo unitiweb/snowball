@@ -3,6 +3,8 @@
 namespace Snowball;
 
 //use Snowball\Config;
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 
 /**
  * Class Snowball
@@ -47,6 +49,8 @@ class Snowball
     {
         $this->sortBills();
 
+        $date = (new CarbonImmutable())->addMonth();
+
         $totalDebit = 0;
         $freedUp = 0;
         foreach ($this->data['bills'] as $bill) {
@@ -60,15 +64,19 @@ class Snowball
         $leftOver = $this->leftOver;
 
         // Loop through each bill
+        $m = 1;
         for ($i = 0; $i < count($this->data['bills']); $i++) {
             $this->debit += $this->data['bills'][$i]['balance'];
+
+            $newDate = $date->addMonth();
 
             $this->addMonth(
                 $monthNumber,
                 $leftOver,
                 $this->data['bills'][$i]['name'],
                 $this->data['bills'][$i]['balance'],
-                $this->data['bills'][$i]['payment']
+                $this->data['bills'][$i]['payment'],
+                new Carbon
             );
 
             // Loop months until balance === 0
@@ -87,10 +95,12 @@ class Snowball
                     $leftOver,
                     $this->data['bills'][$i]['name'],
                     $this->data['bills'][$i]['balance'],
-                    $this->data['bills'][$i]['payment']
+                    $this->data['bills'][$i]['payment'],
+                    (new Carbon())->addMonths($m)
                 );
 
                 $monthNumber++;
+                $m++;
 
                 // Loop through all bills except the one being paid on and pay it's normal monthly bill
                 $this->makePayments($this->data['bills'][$i]);
@@ -119,7 +129,7 @@ class Snowball
         }
     }
 
-    protected function addMonth($number, $paid, $name, $balance, $payment): void
+    protected function addMonth($number, $paid, $name, $balance, $payment, $date): void
     {
         $this->data['months'][] = [
             'month' => $number,
@@ -127,6 +137,7 @@ class Snowball
             'name' => $name,
             'balance' => $balance,
             'payment' => $payment,
+            'date' => $date,
         ];
     }
 
@@ -139,7 +150,7 @@ class Snowball
      */
     public function report(string $method = 'stdout'): ?array
     {
-        $this->report->generate($this->data, 100);
+        $this->report->generate($this->data);
 
         return null;
     }

@@ -12,13 +12,13 @@ class Report
      * The max line width
      * @var int
      */
-    protected $width = 100;
+    protected $width = 113;
 
     /**
      * The max month width
      * @var int
      */
-    protected $monthWidth = 12;
+    protected $monthWidth = 25;
 
     /**
      * The max name width
@@ -42,13 +42,13 @@ class Report
      * Generate the report
      *
      * @param array $data The months array
-     * @param int $width The max width for the report
      *
      * @return void
      */
-    public function generate(array $data, int $width = 100): void
+    public function generate(array $data): void
     {
-        $this->width = $width;
+//        $width = $this->monthWidth + $this->nameWidth + $this->paidWidth + $this->balanceWidth;
+//        $this->width = $width;
 
         $stats = $data['stats'] ?? [];
         $months = $data['months'] ?? [];
@@ -144,12 +144,13 @@ class Report
      */
     public function month(array $data, int $subCount = 0): void
     {
+        $date = $data['date']->format('F Y');
         $month = $data['month'] ?? '';
 
         if ($subCount === 0) {
             $month = str_pad('Starting', $this->monthWidth);
         } else {
-            $month = str_pad('Month #' . $month, $this->monthWidth);
+            $month = str_pad('#' . $month . ': ' . $date, $this->monthWidth);
         }
 
         $name = $data['name'] ?? '';

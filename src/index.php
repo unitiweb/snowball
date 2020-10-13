@@ -4,8 +4,10 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 use Snowball\Snowball;
 
+$leftOver = 500;
+
 $snowball = new Snowball;
-$snowball->setLeftOver(500);
+$snowball->setLeftOver($leftOver);
 
 $snowball->addBill('Amazon Rewards Card', 1047, 40);
 $snowball->addBill('Capital One 7902', 2360, 60);

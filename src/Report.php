@@ -47,9 +47,6 @@ class Report
      */
     public function generate(array $data): void
     {
-//        $width = $this->monthWidth + $this->nameWidth + $this->paidWidth + $this->balanceWidth;
-//        $this->width = $width;
-
         $stats = $data['stats'] ?? [];
         $months = $data['months'] ?? [];
 
